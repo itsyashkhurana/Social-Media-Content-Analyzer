@@ -33,3 +33,18 @@ This application analyzes social media content from uploaded PDF or image files 
 - Basic analysis only
 - Single file upload at a time
 - Simple error handling
+
+
+
+
+SocialMediaAnalyzer/
+├── static/
+|  ├── css/
+│   │   └── style.css
+│   └── uploads/
+├── templates/
+│   ├── index.html
+│   └── result.html
+├── app.py
+├── requirements.txt
+└── README.md
