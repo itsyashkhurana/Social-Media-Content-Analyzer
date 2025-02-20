@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Social Media Content Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Social Media Content Analyzer</h1>
+        <form method="post" enctype="multipart/form-data">
+            <div class="upload-area" id="drop-zone">
+                <p>Drag and drop files here or click to select</p>
+                <input type="file" name="file" id="file-input" accept=".pdf,.png,.jpg,.jpeg">
+            </div>
+            <button type="submit">Analyze</button>
+        </form>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="error">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            fileInput.files = e.dataTransfer.files;
+        });
+
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+    </script>
+</body>
+</html>
