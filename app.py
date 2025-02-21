@@ -1,8 +1,11 @@
+
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
 from flask import Flask, render_template, request, flash
 import os
 from PyPDF2 import PdfReader
 import pytesseract
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 from PIL import Image
 import re
 
@@ -36,19 +39,35 @@ def extract_text_from_image(image_path):
         return f"Error extracting image text: {str(e)}"
 
 def analyze_content(text):
-    # Simple analysis for beginners
     word_count = len(text.split())
     char_count = len(text)
     hashtag_count = len(re.findall(r'#\w+', text))
     
     suggestions = []
-    if word_count < 20:
-        suggestions.append("Consider adding more content (20+ words) for better engagement")
-    if hashtag_count < 2:
-        suggestions.append("Add 2-5 relevant hashtags to increase visibility")
-    if char_count > 280:
-        suggestions.append("Content exceeds Twitter's 280 char limit - consider shortening")
     
+    # Existing suggestions...
+    if word_count < 20:
+        suggestions.append("Consider adding more content (20+ words) for better engagement.")
+    if hashtag_count < 2:
+        suggestions.append("Add 2-5 relevant hashtags to increase visibility.")
+    if hashtag_count > 10:
+        suggestions.append("Too many hashtags (10+) may look spammy - reduce to 5-10.")
+    
+    # Platform-specific length recommendations...
+    if char_count > 280:
+        suggestions.append("Twitter: Exceeds 280 characters - shorten for better fit.")
+    if char_count < 100:
+        suggestions.append("Instagram: Posts under 100 characters may lack context - aim for 100-200.")
+    if 280 >= char_count > 125:
+        suggestions.append("LinkedIn: Ideal length (125-280 chars) for engagement - good job!")
+    else:
+        suggestions.append("LinkedIn: Aim for 125-280 characters for optimal engagement.")
+    
+    # Optimal posting times...
+    suggestions.append("Twitter: Optimal posting times - 12 PM to 3 PM or 5 PM to 6 PM (local time).")
+    suggestions.append("Instagram: Optimal posting times - 11 AM to 2 PM or 6 PM to 9 PM (local time).")
+    suggestions.append("LinkedIn: Optimal posting times - 9 AM to 11 AM weekdays (local time).")
+
     return {
         "word_count": word_count,
         "char_count": char_count,
