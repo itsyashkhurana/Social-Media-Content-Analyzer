@@ -1,5 +1,4 @@
 # Social Media Content Analyzer
-https://yash4.pythonanywhere.com/
 
 
 ## Overview
